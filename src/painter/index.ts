@@ -107,7 +107,7 @@ export default class Painter {
 
         const hooks = this.hooks;
         const wrapTag = this.options.wrapTag;
-        const $spans = document.querySelectorAll<HTMLElement>(`${wrapTag}[data-${DATASET_IDENTIFIER}]`);
+        const $spans = this.options.$root.querySelectorAll<HTMLElement>(`${wrapTag}[data-${DATASET_IDENTIFIER}]`);
 
         // nodes to remove
         const $toRemove: HTMLElement[] = [];

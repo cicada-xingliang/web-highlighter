@@ -23,6 +23,7 @@ export default function getDeferred<T>(): Deferred<T> {
 export const resolve = <T>(data) => {
     const defer = getDeferred<T>();
 
+    // eslint-disable-next-line
     defer.resolve(data);
 
     return defer.promise;

@@ -17,6 +17,8 @@ class HighlightSource {
 
     id: string;
 
+    markdown?: string;
+
     extra?: unknown;
 
     __isHighlightSource: unknown;

@@ -23,7 +23,7 @@ const createTag = (top, left, id) => {
     $span.style.left = `${left - 20}px`;
     $span.style.top = `${top - 25}px`;
     $span.dataset['id'] = id;
-    $span.textContent = 'delete';
+    $span.textContent = 'del';
     $span.classList.add('my-remove-tip');
     document.body.appendChild($span);
 };

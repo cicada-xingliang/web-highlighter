@@ -20,6 +20,7 @@ import {
     addEventListener,
     removeEventListener,
 } from '@src/util/dom';
+import TurndownService from 'turndown';
 
 interface EventHandlerMap {
     [key: string]: (...args: any[]) => void;
@@ -121,6 +122,8 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
     };
 
     fromRange = (range: Range): HighlightSource => {
+        const turndownService = new TurndownService();
+        const markdown = turndownService.turndown(range.cloneContents());
         const start: DomNode = {
             $node: range.startContainer,
             offset: range.startOffset,
@@ -145,7 +148,7 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
             return null;
         }
 
-        return this._highlightFromHRange(hRange);
+        return this._highlightFromHRange(hRange, markdown);
     };
 
     fromStore = (start: DomMeta, end: DomMeta, text: string, id: string, extra?: unknown): HighlightSource => {
@@ -204,8 +207,11 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
         },
     });
 
-    private readonly _highlightFromHRange = (range: HighlightRange): HighlightSource => {
+    private readonly _highlightFromHRange = (range: HighlightRange, markdown?: string): HighlightSource => {
         const source: HighlightSource = range.serialize(this.options.$root, this.hooks);
+
+        source.markdown = markdown;
+
         const $wraps = this.painter.highlightRange(range);
 
         if ($wraps.length === 0) {

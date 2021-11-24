@@ -1,6 +1,6 @@
 {
-  "name": "web-highlighter",
-  "version": "0.7.4",
+  "name": "@leiych/web-highlighter",
+  "version": "0.0.3",
   "description": "✨A no-runtime dependency lib for text highlighting & persistence on any website ✨🖍️",
   "main": "dist/web-highlighter.min.js",
   "types": "dist/index.d.ts",
@@ -16,7 +16,7 @@
     "static": "run-p watch serve",
     "start": "node script/dev.js",
     "build:types": "tscpaths -p tsconfig.json -s ./src -o ./dist",
-    "build:code": "target=dist node script/build.js",
+    "build:code": "node script/build.js",
     "build": "run-s build:code build:types",
     "prepublishOnly": "run-s lint build test"
   },
@@ -47,7 +47,10 @@
   ],
   "author": "alienzhou <alienzhou16@163.com>",
   "license": "MIT",
-  "dependencies": {},
+  "dependencies": {
+    "@types/turndown": "^5.0.1",
+    "turndown": "^7.1.1"
+  },
   "devDependencies": {
     "@types/chai": "^4.2.11",
     "@types/jsdom": "^16.2.3",
@@ -89,7 +92,7 @@
     "typescript": "^4.1.3",
     "webpack": "^4.25.1",
     "webpack-cli": "^3.1.2",
-    "webpack-dev-server": ">=3.1.11",
+    "webpack-dev-server": "3.1.11",
     "webpack-merge": "^4.1.4"
   }
 }
