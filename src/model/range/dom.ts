@@ -87,6 +87,13 @@ export const formatDomNode = (n: DomNode): DomNode => {
         return n;
     }
 
+    if (!n.$node.childNodes[n.offset]) {
+        return {
+            $node: n.$node.childNodes[n.offset - 1],
+            offset: 0,
+        };
+    }
+
     return {
         $node: n.$node.childNodes[n.offset],
         offset: 0,

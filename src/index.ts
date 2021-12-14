@@ -123,7 +123,12 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
 
     fromRange = (range: Range): HighlightSource => {
         const turndownService = new TurndownService();
+
+        turndownService.keep(['iframe']);
+
         const markdown = turndownService.turndown(range.cloneContents());
+        const html = this.domTostring(range);
+
         const start: DomNode = {
             $node: range.startContainer,
             offset: range.startOffset,
@@ -148,7 +153,7 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
             return null;
         }
 
-        return this._highlightFromHRange(hRange, markdown);
+        return this._highlightFromHRange(hRange, markdown, html);
     };
 
     fromStore = (start: DomMeta, end: DomMeta, text: string, id: string, extra?: unknown): HighlightSource => {
@@ -207,12 +212,18 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
         },
     });
 
-    private readonly _highlightFromHRange = (range: HighlightRange, markdown?: string): HighlightSource => {
-        const source: HighlightSource = range.serialize(this.options.$root, this.hooks);
+    private readonly _highlightFromHRange = (
+        Hrange: HighlightRange,
+        markdown?: string,
+        html?: string,
+    ): HighlightSource => {
+        const source: HighlightSource = Hrange.serialize(this.options.$root, this.hooks);
 
         source.markdown = markdown;
 
-        const $wraps = this.painter.highlightRange(range);
+        source.html = html;
+
+        const $wraps = this.painter.highlightRange(Hrange);
 
         if ($wraps.length === 0) {
             eventEmitter.emit(INTERNAL_ERROR_EVENT, {
@@ -285,5 +296,20 @@ export default class Highlighter extends EventEmitter<EventHandlerMap> {
 
             this.emit(EventType.CLICK, { id }, this, e);
         }
+    };
+
+    private readonly domTostring = (dom: Range) => {
+        if (!dom) {
+            return null;
+        }
+
+        const doc = dom.cloneContents();
+        const div = document.createElement('div');
+
+        div.appendChild(doc.cloneNode(true));
+
+        const html = div.innerHTML;
+
+        return html;
     };
 }

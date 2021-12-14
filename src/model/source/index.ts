@@ -19,6 +19,8 @@ class HighlightSource {
 
     markdown?: string;
 
+    html?: string;
+
     extra?: unknown;
 
     __isHighlightSource: unknown;

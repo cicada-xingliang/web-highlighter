@@ -67,8 +67,8 @@ class HighlightRange {
     // serialize the HRange instance
     // so that you can save the returned object (e.g. use JSON.stringify on it and send to backend)
     serialize($root: Document | HTMLElement, hooks: HookMap): HighlightSource {
-        const startMeta = getDomMeta(this.start.$node as Text, this.start.offset, $root);
-        const endMeta = getDomMeta(this.end.$node as Text, this.end.offset, $root);
+        const startMeta = getDomMeta(this.start.$node as HTMLElement | Text, this.start.offset, $root);
+        const endMeta = getDomMeta(this.end.$node as HTMLElement | Text, this.end.offset, $root);
 
         let extra;
 
